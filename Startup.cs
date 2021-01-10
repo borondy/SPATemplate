@@ -11,6 +11,11 @@ using AngularSPATemplate.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NSwag.AspNetCore;
+using System.Linq;
+using System.Collections.Generic;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 
 namespace AngularSPATemplate
 {
@@ -47,6 +52,21 @@ namespace AngularSPATemplate
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddOpenApiDocument(document =>
+                {
+                    document.AddSecurity("JWT", Enumerable.Empty<string>(), new OpenApiSecurityScheme
+                    {
+                        Type = OpenApiSecuritySchemeType.ApiKey,
+                        Description = "Authorization",
+                        In = OpenApiSecurityApiKeyLocation.Header,
+                        Name= "Authorization"
+                    });
+
+                    document.OperationProcessors.Add(
+                        new AspNetCoreOperationSecurityScopeProcessor("JWT"));
+                }
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +86,7 @@ namespace AngularSPATemplate
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -83,7 +104,8 @@ namespace AngularSPATemplate
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
