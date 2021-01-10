@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0"/>
     <PackageReference Include="NSwag.Generation.AspNetCore" Version="13.9.4"/>
     <PackageReference Include="NSwag.AspNetCore" Version="13.9.4"/>
+    <PackageReference Include="NSwag.MSBuild" Version="13.9.4"/>
   </ItemGroup>
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true"/>
@@ -49,5 +50,8 @@
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </ResolvedFileToPublish>
     </ItemGroup>
+  </Target>
+   <Target Name="GenerateApiClientSourceCode" BeforeTargets="CoreCompile;PrepareResource">
+    <Exec Command="$(NSwagExe_NET50) run nswag.json /variables:Configuration=$(Configuration)" />
   </Target>
 </Project>

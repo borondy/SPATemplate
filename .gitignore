@@ -231,3 +231,5 @@ _Pvt_Extensions
 .fake/
 
 app.db
+.angulardoc.json
+ClientApp/src/api/web-api.ts
