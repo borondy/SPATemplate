@@ -51,7 +51,7 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-   <Target Name="GenerateApiClientSourceCode" BeforeTargets="CoreCompile;PrepareResource">
+   <Target Name="GenerateApiClientSourceCode" AfterTargets="Build">
     <Exec Command="$(NSwagExe_NET50) run nswag.json /variables:Configuration=$(Configuration)" />
   </Target>
 </Project>
