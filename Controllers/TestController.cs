@@ -13,9 +13,9 @@ namespace AngularSPATemplate.Controllers
     [Route("[controller]")]
     public class TestController : ControllerBase
     {
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<TestController> _logger;
 
-        public TestController(ILogger<WeatherForecastController> logger)
+        public TestController(ILogger<TestController> logger)
         {
             _logger = logger;
         }
