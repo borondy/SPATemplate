@@ -44,7 +44,20 @@ namespace AngularSPATemplate
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
+                .AddGoogle(o =>
+                {
+                    IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");
+                    o.ClientId = googleAuthNSection["ClientId"];
+                    o.ClientSecret = googleAuthNSection["ClientSecret"];
+                })
+                .AddFacebook(o =>
+                {
+                    IConfigurationSection fbAuthSection = Configuration.GetSection("Authentication:Facebook");
+                    o.AppId = fbAuthSection["AppId"];
+                    o.AppSecret = fbAuthSection["AppSecret"];
+                })
                 .AddIdentityServerJwt();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
@@ -60,7 +73,7 @@ namespace AngularSPATemplate
                         Type = OpenApiSecuritySchemeType.ApiKey,
                         Description = "Authorization",
                         In = OpenApiSecurityApiKeyLocation.Header,
-                        Name= "Authorization"
+                        Name = "Authorization"
                     });
 
                     document.OperationProcessors.Add(

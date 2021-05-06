@@ -234,3 +234,4 @@ app.db
 .angulardoc.json
 ClientApp/src/api/web-api.ts
 wwwroot/api/specification.json
+.vscode/settings.json
